@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-""" app """
+""" 配置文件 """
 
 __author__ = 'Aymer Zhang'  # 模块作者 当公开代码的时候别人就会看到了作者的大名了
 
