@@ -9,8 +9,9 @@ from jinja2 import Environment, FileSystemLoader
 import asyncio, os, json, time, datetime
 import logging
 import www.orm as orm
-import www.coreweb
+from www.coreweb import add_static, add_routes
 import www.config as config
+from www.handlers import cookie2user, COOKIE_NAME
 
 logging.basicConfig(level=logging.INFO)
 
@@ -90,6 +91,25 @@ async def response_factory(app, handler):
     return response
 
 
+@asyncio.coroutine
+def auth_factory(app, handler):
+    @asyncio.coroutine
+    def auth(request):
+        logging.info('check user: %s %s' % (request.method, request.path))
+        request.__user__ = None
+        cookie_str = request.cookies.get(COOKIE_NAME)
+        if cookie_str:
+            user = yield from cookie2user(cookie_str)
+            if user:
+                logging.info('set current user: %s' % user.email)
+                request.__user__ = user
+        if request.path.startswith('/manage/') and (request.__user__ is None or not request.__user__.admin):
+            return web.HTTPFound('/signin')
+        return (yield from handler(request))
+
+    return auth
+
+
 def datetime_filter(t):
     delta = int(time.time() - t)
     if delta < 60:
@@ -107,13 +127,14 @@ def datetime_filter(t):
 @asyncio.coroutine
 def init(loop):
     app = web.Application(loop=loop, middlewares=[
-        logger_factory, response_factory
+        logger_factory, response_factory, auth_factory
     ])
     init_jinja2(app, filters=dict(datetime=datetime_filter))
     # app.router.add_route('GET', '/', index)
-    www.coreweb.add_routes(app, 'www.handlers')
+    add_routes(app, 'www.handlers')
     dbconfig = config.configs['db']
     yield from orm.create_pool(loop, user=dbconfig['user'], password=dbconfig['password'], db=dbconfig['database'])
+    add_static(app)
     srv = yield from loop.create_server(app.make_handler(), dbconfig['host'], 9000)
     logging.info('server started at http://%s:9000...' % dbconfig['host'])
     return srv
