@@ -8,7 +8,7 @@ __author__ = 'Aymer Zhang'  # 模块作者 当公开代码的时候别人就会�
 configs = {
     'db': {
         'host': '192.168.0.100'
-    }
+    },
     'session': {
         'secret': 'AwEsOmE'
     }
