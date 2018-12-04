@@ -29,26 +29,17 @@
         });
     }
 
-    $(function () {
-        getJSON('/api/comments', {
-            page: {
-        {
-            page_index
+$(function() {
+    getJSON('/api/comments', {
+        page: {{ page_index }}
+    }, function (err, results) {
+        if (err) {
+            return fatal(err);
         }
-    }
-    },
-
-        function (err, results) {
-            if (err) {
-                return fatal(err);
-            }
-            $('#loading').hide();
-            initVM(results);
-        }
-
-    )
-        ;
+        $('#loading').hide();
+        initVM(results);
     });
+});
 </script>
 
 {% endblock %}
