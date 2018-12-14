@@ -7,7 +7,7 @@ __author__ = 'Aymer Zhang'  # 模块作者 当公开代码的时候别人就会�
 
 import time, uuid
 
-from www.orm import Model, StringField, BooleanField, FloatField, TextField
+from orm import Model, StringField, BooleanField, FloatField, TextField
 
 
 def next_id():

@@ -6,12 +6,13 @@
 __author__ = 'Aymer Zhang'  # 模块作者 当公开代码的时候别人就会看到了作者的大名了
 
 from jinja2 import Environment, FileSystemLoader
-import asyncio, os, json, time, datetime
+import asyncio, os, json, time
+from datetime import datetime
 import logging
-import www.orm as orm
-from www.coreweb import add_static, add_routes
-import www.config as config
-from www.handlers import cookie2user, COOKIE_NAME
+import orm as orm
+from coreweb import add_static, add_routes
+import config as config
+from handlers import cookie2user, COOKIE_NAME
 
 logging.basicConfig(level=logging.INFO)
 
@@ -131,7 +132,7 @@ def init(loop):
     ])
     init_jinja2(app, filters=dict(datetime=datetime_filter))
     # app.router.add_route('GET', '/', index)
-    add_routes(app, 'www.handlers')
+    add_routes(app, 'handlers')
     dbconfig = config.configs['db']
     yield from orm.create_pool(loop, user=dbconfig['user'], password=dbconfig['password'], db=dbconfig['database'])
     add_static(app)

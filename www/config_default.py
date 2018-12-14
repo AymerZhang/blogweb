@@ -10,7 +10,8 @@ configs = {
         'host': '127.0.0.1',
         'port': 3306,
         'user': 'root',
-        'password': 'password',
+        # 'password': '123456',  # 服务器
+        'password': 'password',  # 本地
         'database': 'awesome'
     },
     'session': {

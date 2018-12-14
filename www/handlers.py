@@ -6,15 +6,15 @@ import hashlib
 import json
 from aiohttp import web
 
-from www import markdown2
-from www.apis import APIValueError, APIError, APIPermissionError, Page, APIResourceNotFoundError
+import markdown2
+from apis import APIValueError, APIError, APIPermissionError, Page, APIResourceNotFoundError
 
 __author__ = 'Aymer Zhang'  # 模块作者 当公开代码的时候别人就会看到了作者的大名了
-from www.coreweb import get, post
-from www.models import Blog, User, next_id, Comment
+from coreweb import get, post
+from models import Blog, User, next_id, Comment
 import time, asyncio, logging
 import re
-from www.config import configs
+from config import configs
 
 COOKIE_NAME = 'webAppSession'
 _COOKIE_KEY = configs.session.secret
