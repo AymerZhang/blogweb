@@ -1,5 +1,7 @@
 # webapp open source
 
-my first python web application 
+ blog web app develop by pythonA
+ 
+Build and package upload using fabric
 
-change by aymer
+
